@@ -1,13 +1,21 @@
 <template>
-
-<div class="app">
-<JobList :jobs="jobs"/>
-</div>
+  <div class="app">
+    <header>
+      <div class="order">
+        <button @click="handleClick('title')">order by title</button>
+        <button @click="handleClick('salary')">order by salary</button>
+        <button @click="handleClick('location')">order by location</button>
+      </div>
+    </header>
+    <JobList :jobs="jobs" :order="order" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import Job from './types/Job'
+import OrderTerm from './types/OrderTerm'
+
 import JobList from './components/JobsList.vue'
 
 export default defineComponent({
@@ -15,26 +23,9 @@ export default defineComponent({
   components: {
     JobList
   },
-  setup(){
-    // const state = reactive({
-    //   name: 'Link',
-    //   age: 25 as string | number
-    // })
-    // state.name = 'shaun'
-    // return {
-    //   ...toRefs(state)
-    // }
+  setup() {
 
-  //   const name = ref('Link')
-  //   const age = ref<number | string>(12)
-
-
-  //  return {
-  //    name, age
-
-  //  }
-
-  const jobs = ref<Job[]>([ //this is an array of Job objects
+    const jobs = ref<Job[]>([ //this is an array of Job objects
       {
         title: 'Farm worker',
         location: 'lon lon ranch',
@@ -63,13 +54,21 @@ export default defineComponent({
         title: 'prison guard',
         location: 'gerudo valley',
         salary: 32000,
-        id: '1'
+        id: '5'
       }
-  ])
+    ])
 
-  return {
-    jobs
-  }
+    const order = ref<OrderTerm>('title')
+
+    const handleClick = (term: OrderTerm) => {
+      order.value = term
+    }
+
+    return {
+      jobs,
+      handleClick,
+      order
+    }
   },
 
 
@@ -77,5 +76,22 @@ export default defineComponent({
 </script>
 
 <style>
+header {
+  text-align: center;
+}
 
+header .order {
+  margin-top: 20px;
+}
+
+button {
+  margin: 0 10px;
+  color: #1195c9;
+  border: 3px solid #1195c9;
+  background: #d5f0ff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
 </style>
